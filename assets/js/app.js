@@ -104,7 +104,7 @@ function renderText(textGroup, newXScale, chosenXAxis, newYScale, chosenYAxis){
 }
 
 // function used for updating circles group with new tooltip
-function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup, textGroup) {
+function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
   //x axis labels
   if (chosenXAxis === "poverty") {
     var xlabel = "Poverty Rate:";
@@ -139,28 +139,13 @@ else if(chosenYAxis === "smokes"){
       (`<br>${ylabel} ${d[chosenYAxis]}`);
     });
 
-  textGroup.call(toolTip);
   circlesGroup.call(toolTip);
-  
-  // textGroup.on("mouseover", toolTip.show)
-  //   .on("mouseout", toolTip.hide);
+  //textGroup.call(toolTip);
 
-  // return textGroup;
-  circlesGroup.on("mouseover", function(data) {
-    toolTip.show(data);
-  })
+  circlesGroup.on("mouseover", toolTip.show)
+    .on("mouseout", toolTip.hide);
 
- .on("mouseout", function(data, index) {
-    toolTip.hide(data);
-    });
-
-  textGroup.on("mouseover", function(data) {
-    toolTip.show(data);
-  })
-
-  .on("mouseout", function(data) {
-    toolTip.hide(data);
-     });
+  return circlesGroup;
   
 }
 
@@ -283,7 +268,7 @@ d3.csv("./assets/data/data.csv").then(function(statesData, err) {
     .text("Obese (%)");
 
   // updateToolTip function above csv import
-  var circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup, textGroup);
+  var circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
 
   // x axis labels event listener
   xlabelsGroup.selectAll("text")
@@ -311,7 +296,7 @@ d3.csv("./assets/data/data.csv").then(function(statesData, err) {
         textGroup = renderText(textGroup, xLinearScale, chosenXAxis, yLinearScale, chosenYAxis);
 
         // updates tooltips with new info
-        circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup, textGroup);
+        circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
 
         // changes classes to change bold text
         if (chosenXAxis === "age") {
@@ -377,7 +362,7 @@ d3.csv("./assets/data/data.csv").then(function(statesData, err) {
         textGroup = renderText(textGroup, xLinearScale, chosenXAxis, yLinearScale, chosenYAxis);
 
         // updates tooltips with new info
-        circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup, textGroup);
+        circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
 
         // changes classes to change bold text
         if (chosenYAxis === "healthcare") {
